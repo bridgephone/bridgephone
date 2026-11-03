@@ -62,3 +62,20 @@ A pair's result is its total matchpoints as a percentage of the maximum it could
 - Handicaps, player ratings or history across tournaments
 - Notifications
 - Login methods other than Google
+
+
+## Technical
+
+Everything is written in TypeScript, in one repository.
+
+- **Frontend**: a SolidJS single-page app, built with Vite.
+- **Backend**: a Hono API running on Node.
+  - Each route is defined with `@hono/zod-openapi`. One Zod schema per route gives request validation, TypeScript types and a generated OpenAPI document.
+  - The frontend calls the API through Hono's typed client (`hc`), so API calls are type-checked end to end.
+- **Database**: Postgres. Only the raw NS scores are stored; matchpoints and rankings are calculated when requested.
+- **Auth**: Google sign-in handled by the server, which keeps a session in an HTTP-only cookie. A Google account whose email is not a club member is refused.
+- **Authorization**: every rule in this spec (roles, who may enter a score, which scores a player may see, locked scores after finishing) is enforced by the API, not only by the UI.
+- **Updates**: no live updates. Players see new scores when they refresh the page.
+- **Deployment**: the Node server serves both the built frontend and the API, so the app ships as one Docker container. Locally, the app and Postgres run with docker compose. In production, the app runs on any cloud provider that runs Docker containers, using that provider's managed Postgres. Production uses HTTPS on a fixed domain, as Google sign-in requires.
+
+
