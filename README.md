@@ -2,6 +2,8 @@
 
 A mobile-first webapp for bridge pairs tournaments at a bridge club. See [SPEC.md](SPEC.md) for what it does.
 
+**Not a developer?** [GETTING-STARTED.md](GETTING-STARTED.md) explains step by step how to try Bridgephone on your own computer.
+
 ## What you need
 
 - **Node.js 24** or later (the server runs its TypeScript directly, without a build step)
