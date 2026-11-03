@@ -72,7 +72,7 @@ Everything is written in TypeScript, in one repository.
 - **Backend**: a Hono API running on Node.
   - Each route is defined with `@hono/zod-openapi`. One Zod schema per route gives request validation, TypeScript types and a generated OpenAPI document.
   - The frontend calls the API through Hono's typed client (`hc`), so API calls are type-checked end to end.
-- **Database**: Postgres. Only the raw NS scores are stored; matchpoints and rankings are calculated when requested.
+- **Database**: Postgres, used through postgres.js with plain SQL. Migrations are numbered `.sql` files, applied when the server starts. Only the raw NS scores are stored; matchpoints and rankings are calculated when requested.
 - **Auth**: Google sign-in handled by the server, which keeps a session in an HTTP-only cookie. A Google account whose email is not a club member is refused.
 - **Authorization**: every rule in this spec (roles, who may enter a score, which scores a player may see, locked scores after finishing) is enforced by the API, not only by the UI.
 - **Updates**: no live updates. Players see new scores when they refresh the page.

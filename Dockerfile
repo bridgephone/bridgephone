@@ -1,0 +1,19 @@
+FROM node:24-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:24-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+COPY migrations ./migrations
+COPY src/server ./src/server
+COPY src/shared ./src/shared
+COPY --from=build /app/dist ./dist
+USER node
+EXPOSE 3000
+CMD ["node", "src/server/main.ts"]
